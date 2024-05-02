@@ -1,6 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,redirect
+from . forms import UserSignUpForm
 
 # Create your views here.
 def signUp(request):
-    return HttpResponse('<h1>Register</h1>') 
+    if request.method == "POST":
+        form = UserSignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    
+    form = UserSignUpForm()
+    return render(request, 'registration/sign-up.html', {'form':form})
+
